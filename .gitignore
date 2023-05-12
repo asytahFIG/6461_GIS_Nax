@@ -329,7 +329,9 @@ __pycache__/
 
 # GIS database
 *postmaster.pid
-data/db/
+container_nax/data/db/
+
+**/db/
 
 # Cake - Uncomment if you are using it
 # tools/**
