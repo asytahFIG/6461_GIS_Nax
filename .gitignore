@@ -328,10 +328,21 @@ __pycache__/
 *.pyc
 
 # GIS database
-*postmaster.pid
-container_nax/data/db/
-
-**/db/
+**/db/PG_VERSION
+**/db/pg_hba.conf
+**/db/pg_ident.conf
+**/db/postmaster.opts
+**/db/postmaster.pid
+**/db/base/*
+**/db/global/*
+**/db/pg_clog/*
+**/db/pg_log/*
+**/db/pg_multixact/*
+**/db/pg_notify/*
+**/db/pg_stat_tmp/*
+**/db/pg_subtrans/*
+**/db/pg_xlog/*
+**/db/db.tar.gz
 
 # Cake - Uncomment if you are using it
 # tools/**
