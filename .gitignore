@@ -343,10 +343,7 @@ __pycache__/
 **/db/pg_subtrans/*
 **/db/pg_xlog/*
 **/db/db.tar.gz
-**/db/pg_wal/
-**/db/pg_xact
-**/postgresql.auto.conf
-postgresql.conf
+
 
 # Cake - Uncomment if you are using it
 # tools/**
