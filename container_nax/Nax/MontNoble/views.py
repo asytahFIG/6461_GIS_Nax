@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from .models import Forest, Ski_slope
+from .models import Forest, Ski_slope, Hotel
 from django.template import loader
 from django.http import Http404
 from django.shortcuts import render
@@ -12,6 +12,11 @@ def index(request):
 def skiDomain(request):
     context = {}
     return render(request, 'MontNoble/skiDomain.html', context)
+
+# Create your views here.
+def hotel(request):
+    hteols=Hotel.objects.filter(cost="$$")
+    return HttpResponse(hteols[0].name)
 
 def forestsjson(request):
     forests=Forest.objects.all()

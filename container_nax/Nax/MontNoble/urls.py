@@ -5,4 +5,5 @@ urlpatterns = [
     path('skiDomain/', views.skiDomain, name='skiDomain'),
     path('forests.json', views.forestsjson, name='forestsjson'),
     path('skiSlopes.json', views.skiSlopejson, name='skiSlopejson'),
+     path('hotel', views.hotel, name='hotel'),
 ]
