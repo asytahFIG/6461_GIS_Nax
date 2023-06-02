@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Forest
 
 def index(request):
-    return HttpResponse("hello")
-
+    return HttpResponse("Hello, friend. There you'll find Switzerland.")
 
 # Create your views here.
