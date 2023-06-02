@@ -1,7 +1,6 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 
 def index(request):
-    return HttpResponse("Mont Noble welcome page")
+    return HttpResponse("Hello, friend. There you'll find Switzerland.")
 
 # Create your views here.
