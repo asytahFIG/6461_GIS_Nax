@@ -10,10 +10,10 @@
         <script type="text/javascript">
             // init map at a certain position and zoom
             function main_map_init (map, options) {
-                map.setView([46.226485, 7.424843], 15);
+                map.setView([46.22540, 7.6245], 15);
                 // add a marker
-                var marker = L.marker([46.226485, 7.424843]).addTo(map);
-                marker.bindPopup("Nax Mont-Noble");
+                var marker = L.marker([46.22540, 7.6245]).addTo(map);
+                marker.bindPopup("Nax - Mont-Noble");
 
                 var dataUrlSkiSlope='{% url "skiSlopejson" %}'
                 $.getJSON(dataUrlSkiSlope, function (data) {
