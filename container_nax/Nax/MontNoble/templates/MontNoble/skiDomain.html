@@ -14,11 +14,16 @@
                 // add a marker
                 var marker = L.marker([46.226485, 7.424843]).addTo(map);
                 marker.bindPopup("Nax Mont-Noble");
-                
-                var dataUrl='{% url "forestsjson" %}'
-                $.getJSON(dataUrl, function (data) {
+
+                var dataUrlSkiSlope='{% url "skiSlopejson" %}'
+                $.getJSON(dataUrlSkiSlope, function (data) {
+                    L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
+
+                var dataUrlForest='{% url "forestsjson" %}'
+                $.getJSON(dataUrlForest, function (data) {
                     L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
             }
+            
             function onEachFeature(feature, layer) {
             if(feature.properties && feature.properties.name) {
                 layer.bindPopup(feature.properties.name);
