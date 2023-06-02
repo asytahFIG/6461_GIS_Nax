@@ -1,18 +1,21 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 # Create your models here.
 
 # Ski resort
 
-class SkiSlope(models.Model):
+class Ski_slope(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True) 
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
     difficulty = models.IntegerField
 
-class ChairLift(models.Model):
+class Chair_lift(models.Model):
     id = models.IntegerField
+    geom = models.MultiLineStringField
+    geom=models.MultiPolygonField(srid=4326,null=True) 
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -21,6 +24,7 @@ class ChairLift(models.Model):
 
 class Transportation(models.Model):
     id = models.IntegerField
+    geom=models.PointField
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -31,6 +35,7 @@ class Transportation(models.Model):
 
 class Parking(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True) 
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -41,6 +46,7 @@ class Parking(models.Model):
 
 class Restaurant(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True) 
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -49,6 +55,7 @@ class Restaurant(models.Model):
 
 class Hotel(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -58,6 +65,7 @@ class Hotel(models.Model):
 
 class Hut(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -65,8 +73,9 @@ class Hut(models.Model):
     available = models.IntegerField
     nb_beds = models.IntegerField
 
-class Facility(models.Model):
+class Facilities(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -77,6 +86,7 @@ class Facility(models.Model):
 
 class Forest(models.Model):
     id = models.IntegerField
+    geom=models.MultiPolygonField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -85,6 +95,7 @@ class Forest(models.Model):
 
 class Summit(models.Model):
     id = models.IntegerField
+    geom=models.PointField
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
