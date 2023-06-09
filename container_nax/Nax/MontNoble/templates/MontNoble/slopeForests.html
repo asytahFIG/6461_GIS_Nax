@@ -4,20 +4,19 @@
     {% leaflet_css %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
-<body>
+<body>   
     <div id="slopeForests" style="width: 100%; height: 100%">
+
         {% leaflet_map "slopeForests" callback="main_map_init" %}
         <script type="text/javascript">
             
             // init map at a certain position and zoom
             function main_map_init (map, options) {
                 map.setView([46.211657, 7.481341], 14);
-
-                var dataUrlSkiSlope='{% url "skiSlopesjson" %}'
-                $.getJSON(dataUrlSkiSlope, function (data) {
-                    L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
-
-              
+                
+                // load context and parse it as json
+                var neighborForests = JSON.parse("{{ neighborForests|escapejs }}");
+                L.geoJson(neighborForests, {onEachFeature: onEachFeature}).addTo(map); 
             }
             
             function onEachFeature(feature, layer) {
@@ -28,12 +27,3 @@
         </script>
     </div>
 </body>
-
-<!-- <h1>
-   
-
-    {% for forest in neighborForests %}
-        {{forest.name}}
-
-    {% endfor %}
-</h1> -->

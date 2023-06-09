@@ -13,7 +13,6 @@ urlpatterns = [
     path('restaurants.json', views.restaurantsjson, name='restaurantsjson'),
     path('parkings.json', views.parkingsjson, name='parkingsjson'),
     path('huts.json', views.hutsjson, name='hutsjson'),
-    path('slopeForests.json', views.slopeForestsjson, name='slopeForestsjson'),
     path('summits.json', views.summitsjson, name='summitsjson'),
     path('transportation.json', views.transportationjson, name='transportationjson'),
     path('chairLifts.json', views.chairLiftsjson, name='chairLiftsjson'),
