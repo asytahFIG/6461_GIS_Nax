@@ -1,9 +1,7 @@
 from django.contrib.gis.db import models
 
 # Create your models here.
-
 # Ski resort
-
 class Ski_slope(models.Model):
     id = models.IntegerField
     geom = models.MultiPolygonField(srid=4326,null=True) 
@@ -16,7 +14,7 @@ class Ski_slope(models.Model):
 
 class Chair_lift(models.Model):
     id = models.IntegerField
-    geom = models.MultiLineStringField
+    geom = models.MultiLineStringField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -24,10 +22,9 @@ class Chair_lift(models.Model):
         db_table = "Chair_lift"
 
 # Transport
-
 class Transportation(models.Model):
     id = models.IntegerField
-    geom = models.PointField
+    geom = models.PointField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
@@ -50,7 +47,6 @@ class Parking(models.Model):
         db_table = "Parking"
 
 # Building
-
 class Restaurant(models.Model):
     id = models.IntegerField
     geom = models.MultiPolygonField(srid=4326,null=True) 
@@ -98,7 +94,6 @@ class Facilities(models.Model):
         db_table = "Facilities"
 
 # Nature
-
 class Forest(models.Model):
     id = models.IntegerField
     geom = models.MultiPolygonField(srid=4326,null=True)
@@ -112,7 +107,7 @@ class Forest(models.Model):
 
 class Summit(models.Model):
     id = models.IntegerField
-    geom = models.PointField
+    geom = models.PointField(srid=4326,null=True)
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)

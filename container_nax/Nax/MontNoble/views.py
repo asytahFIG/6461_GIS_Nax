@@ -9,8 +9,6 @@ from django.core.serializers import serialize
 
 from MontNoble.geometry_manager import load_shapely_from_geodjango
 
-import shapely.wkt
-
 def index(request):
     return render (request, 'MontNoble/index.html')
 
@@ -31,12 +29,9 @@ def slopeForests(request, slope_id):
 def slopeForestsjson(request, slope_id):
     try:
         ski_slope=Ski_slope.objects.get(pk=slope_id)
-
     except Ski_slope.DoesNotExist:
         raise Http404("City not found!!")
-
     slope_polygon = load_shapely_from_geodjango(ski_slope)
-
     all_forests=Forest.objects.order_by('-name')
     neighborForests = []
     for forest in all_forests:
@@ -47,11 +42,14 @@ def slopeForestsjson(request, slope_id):
     ser=serialize('geojson',neighborForests,geometry_field='geom',fields=('name',))
     return HttpResponse(ser, content_type='json')
 
-
-# Create your views here.
+# Views for services
 def hotel(request):
-    hteols=Hotel.objects.filter(cost="$$")
-    return HttpResponse(hteols[0].geom)
+    hotels=Hotel.objects.filter(cost="$$")
+    return HttpResponse(hotels[0].geom)
+
+def summit(request):
+    summits=Summit.objects.order_by('-name')
+    return HttpResponse(summits[0].geom)
 
 # Serialized objects to show on map - polygons
 def forestsjson(request):
@@ -92,7 +90,20 @@ def hutsjson(request):
 
 # Serialized objects to show on map - points
 
+def summitsjson(request):
+    summits=Summit.objects.all()
+    ser=serialize('geojson', summits, geometry_field='geom', fields=('name', ))
+    return HttpResponse(ser, content_type='json')
+
+def transportationjson(request):
+    transportation=Transportation.objects.all()
+    ser=serialize('geojson', transportation, geometry_field='geom', fields=('name', ))
+    return HttpResponse(ser, content_type='json')
 
 # Serilized objects to show on map - lines
+def chairLiftsjson(request):
+    chairLifts=Chair_lift.objects.all()
+    ser=serialize('geojson', chairLifts, geometry_field='geom', fields=('name', ))
+    return HttpResponse(ser, content_type='json')
 
 
