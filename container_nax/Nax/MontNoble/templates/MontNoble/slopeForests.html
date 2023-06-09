@@ -17,7 +17,7 @@
                 var marker = L.marker([46.22540, 7.6245]).addTo(map);
                 marker.bindPopup("Nax - Mont-Noble");
 
-                var dataUrlSkiSlope='{% url "skiSlopejson" %}'
+                var dataUrlSkiSlope='{% url "skiSlopesjson" %}'
                 $.getJSON(dataUrlSkiSlope, function (data) {
                     L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
 
