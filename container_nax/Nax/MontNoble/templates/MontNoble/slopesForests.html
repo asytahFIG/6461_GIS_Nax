@@ -1,0 +1,30 @@
+<div class="page_container">
+    <h1>Sur quelle piste vous trouvez vous ?</h1>
+    {% for slope in ski_slopes %}
+
+    <a class="slope_link" href="/MontNoble/slopeForests/{{slope.id}}">
+        {{slope.name}}
+    </a>
+
+    {% endfor %}
+</div>
+
+<style>
+    .page_container {
+        display: block;
+        padding: 5%
+    }
+
+    .slope_link {
+        padding: 10vh;
+        display: inline-flex !important;
+        width: 20%;
+        color: black;
+        font-size: large;
+        text-decoration: initial
+    }
+
+    .slope_link:hover {
+        background-color: aqua;
+    }
+</style>
