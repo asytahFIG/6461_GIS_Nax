@@ -5,6 +5,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.core.serializers import serialize
 from shapely.geometry import Polygon
+from django.core.serializers import serialize
 
 from MontNoble.geometry_manager import load_shapely_from_geodjango
 
@@ -25,7 +26,9 @@ def slopesForests(request):
     return render(request, 'MontNoble/slopesForests.html', context)
 
 def slopeForests(request, slope_id):
+    return render(request,'MontNoble/slopeForests.html',{'slope_id': slope_id})
 
+def slopeForestsjson(request, slope_id):
     try:
         ski_slope=Ski_slope.objects.get(pk=slope_id)
 
@@ -41,7 +44,8 @@ def slopeForests(request, slope_id):
         if (forest_polygon.intersects(slope_polygon)):
             neighborForests.append(forest)
 
-    return render(request,'MontNoble/slopeForests.html',{'neighborForests': neighborForests})
+    ser=serialize('geojson',neighborForests,geometry_field='geom',fields=('name',))
+    return HttpResponse(ser, content_type='json')
 
 
 # Create your views here.

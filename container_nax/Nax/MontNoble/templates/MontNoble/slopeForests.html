@@ -1,4 +1,4 @@
-<!-- {% load leaflet_tags %}
+{% load leaflet_tags %}
 <head>
     {% leaflet_js %}
     {% leaflet_css %}
@@ -11,19 +11,13 @@
             
             // init map at a certain position and zoom
             function main_map_init (map, options) {
-                map.setView([46.22540, 7.6245], 15);
-                
-                // add a marker
-                var marker = L.marker([46.22540, 7.6245]).addTo(map);
-                marker.bindPopup("Nax - Mont-Noble");
+                map.setView([46.211657, 7.481341], 14);
 
                 var dataUrlSkiSlope='{% url "skiSlopesjson" %}'
                 $.getJSON(dataUrlSkiSlope, function (data) {
                     L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
 
-                var dataUrlForest='{% url "forestsjson" %}'
-                $.getJSON(dataUrlForest, function (data) {
-                    L.geoJson(data, {onEachFeature: onEachFeature}).addTo(map); });
+              
             }
             
             function onEachFeature(feature, layer) {
@@ -33,13 +27,13 @@
         }
         </script>
     </div>
-</body> -->
+</body>
 
-<h1>
+<!-- <h1>
    
 
     {% for forest in neighborForests %}
         {{forest.name}}
 
     {% endfor %}
-</h1>
+</h1> -->
