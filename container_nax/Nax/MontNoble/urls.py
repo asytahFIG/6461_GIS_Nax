@@ -4,8 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('skiDomain/', views.skiDomain, name='skiDomain'),
-    path('slopesForests', views.slopesForests, name='slopesForests'),
-    path('slopeForests/<int:slope_id>', views.slopeForests, name='slopeForests'),
     path('forests.json', views.forestsjson, name='forestsjson'),
     path('skiSlopes.json', views.skiSlopesjson, name='skiSlopesjson'),
     path('facilities.json', views.facilitiesjson, name='facilitiesjson'),
