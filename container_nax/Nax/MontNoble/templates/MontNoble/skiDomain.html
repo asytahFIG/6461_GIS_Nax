@@ -1,41 +1,88 @@
 {% load leaflet_tags %}
 <head>
-  {% leaflet_js %} {% leaflet_css %}
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    {% leaflet_js %} {% leaflet_css %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
 </head>
 <body>
+    <header style=" background-color: cadetblue;">
+        <nav>
+            <ul style="display: flex; justify-content: center; padding: 10px;">
+                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Home</a></li>
+                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">About</a></li>
+                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Services</a></li>
+                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
   <div id="skiDomain" style="width: 100%; height: 100%">
     {% leaflet_map "skiDomain" callback="main_map_init" %}
     <script type="text/javascript">
-      // init map at a certain position and zoom
-      function main_map_init(map, options) {
-        map.setView([46.211657, 7.481341], 14);
-        // add a marker
-        var marker = L.marker([46.2253113, 7.4622059]).addTo(map);
-        marker.bindPopup("Nax - Mont-Noble");
+        // init map at a certain position and zoom
+        function main_map_init(map, options) {
+            map.setView([46.211657, 7.481341], 14);
+            // add a marker
+            var marker = L.marker([46.2253113, 7.4622059]).addTo(map);
+            marker.bindPopup("Nax - Mont-Noble");
 
-        var urls = [
-          "{% url 'skiSlopesjson' %}",
-          "{% url 'forestsjson' %}",
-          "{% url 'facilitiesjson' %}",
-          "{% url 'hotelsjson' %}",
-          "{% url 'restaurantsjson' %}",
-          "{% url 'parkingsjson' %}",
-          "{% url 'hutsjson' %}"
-        ];
+            // polygons
+            var urls = [
+            "{% url 'skiSlopesjson' %}",
+            "{% url 'forestsjson' %}",
+            "{% url 'facilitiesjson' %}",
+            "{% url 'hotelsjson' %}",
+            "{% url 'restaurantsjson' %}",
+            "{% url 'parkingsjson' %}",
+            "{% url 'hutsjson' %}",
+            ];
 
-        urls.forEach(function (url) {
-          $.getJSON(url, function (data) {
-            L.geoJson(data, { onEachFeature: onEachFeature }).addTo(map);
-          });
-        });
-      }
+            urls.forEach(function (url) {
+            $.getJSON(url, function (data) {
+                L.geoJson(data, {
+                    onEachFeature: onEachFeature }).addTo(map);
+            });
+            });
 
-      function onEachFeature(feature, layer) {
-        if (feature.properties && feature.properties.name) {
-          layer.bindPopup(feature.properties.name);
-        }
-      }
+            var pointUrls = [
+            "{% url 'summitsjson' %}",
+            "{% url 'transportationjson' %}",
+            ];
+
+            pointUrls.forEach(function (url) {
+            $.getJSON(url, function (data) {
+                L.geoJson(data, {                
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {icon: L.icon({
+                        iconUrl: "container_nax/Nax/MontNoble/templates/MontNoble/images/summit.png",
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10],
+                        popupAnchor: [0, -10],
+                        })});
+                },
+                onEachFeature: onEachFeature,
+                }).addTo(map);
+            });
+            });
+
+            var lineUrls = [
+            "{% url 'chairLiftsjson' %}",
+            ];
+
+            lineUrls.forEach(function (url) {
+            $.getJSON(url, function (data) {
+                L.geoJson(data, {
+                style: function (feature) {
+                    return { color: 'red' }; // Modifier le style des lignes selon vos besoins
+                },
+                onEachFeature: onEachFeature,
+                }).addTo(map);
+            });
+            });
+
+            function onEachFeature(feature, layer) {
+              if (feature.properties && feature.properties.name) {
+                layer.bindPopup(feature.properties.name);
+              }
+            }}
     </script>
   </div>
 </body>
