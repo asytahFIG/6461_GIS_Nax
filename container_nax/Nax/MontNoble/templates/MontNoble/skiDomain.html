@@ -35,10 +35,29 @@
             "{% url 'hutsjson' %}",
             ];
 
+            // for each url in urls, get the data and add it to the map in a different color
             urls.forEach(function (url) {
             $.getJSON(url, function (data) {
                 L.geoJson(data, {
-                    onEachFeature: onEachFeature }).addTo(map);
+                style: function (feature) {
+                    if (url == "{% url 'skiSlopesjson' %}") {
+                    return { color: 'grey' };
+                    } else if (url == "{% url 'forestsjson' %}") {
+                    return { color: 'green' };
+                    } else if (url == "{% url 'facilitiesjson' %}") {
+                    return { color: 'blue' };
+                    } else if (url == "{% url 'hotelsjson' %}") {
+                    return { color: 'yellow' };
+                    } else if (url == "{% url 'restaurantsjson' %}") {
+                    return { color: 'orange' };
+                    } else if (url == "{% url 'parkingsjson' %}") {
+                    return { color: 'purple' };
+                    } else if (url == "{% url 'hutsjson' %}") {
+                    return { color: 'brown' };
+                    }
+                },
+                onEachFeature: onEachFeature,
+                }).addTo(map);
             });
             });
 
@@ -63,6 +82,7 @@
             });
             });
 
+            
             var lineUrls = [
             "{% url 'chairLiftsjson' %}",
             ];

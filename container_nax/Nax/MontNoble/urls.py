@@ -16,4 +16,5 @@ urlpatterns = [
     path('chairLifts.json', views.chairLiftsjson, name='chairLiftsjson'),
     path('hotel', views.hotel, name='hotel'),
     path('summit', views.summit, name='summit'),
+    
 ]
