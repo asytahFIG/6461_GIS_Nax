@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from .models import Forest, Ski_slope, Hotel, Hut, Facilities, Summit, Chair_lift, Parking, Restaurant, Transportation
 from django.template import loader
-from django.http import Http404
+from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.core.serializers import serialize
 from shapely.geometry import Polygon
