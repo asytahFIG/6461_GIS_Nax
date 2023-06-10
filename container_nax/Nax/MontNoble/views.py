@@ -35,12 +35,14 @@ def slopeForests(request, slope_id):
     neighborForests = []
     for forest in all_forests:
         forest_polygon = load_shapely_from_geodjango(forest)
-        if (forest_polygon.intersects(slope_polygon)):
+        if (forest_polygon.intersects(slope_polygon) or forest_polygon.distance(slope_polygon) <= 30):
             neighborForests.append(forest)
 
-    ser=serialize('geojson',neighborForests,geometry_field='geom',fields=('name',))
+    for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
+    ski_slope_arr = [ski_slope]
+    ser=serialize('geojson',ski_slope_arr,geometry_field='geom',fields=("name", ))
 
-    return render(request,'MontNoble/slopeForests.html',{'neighborForests': ser})
+    return render(request,'MontNoble/slopeForests.html',{'neighborForests': for_ser, 'skiSlope': ser})
 
 # Views for services
 def hotel(request):
@@ -59,7 +61,7 @@ def forestsjson(request):
 
 def skiSlopesjson(request):
     skiSlopes=Ski_slope.objects.all()
-    ser=serialize('geojson', skiSlopes, geometry_field='geom', fields=('name', 'difficulty'))
+    ser=serialize('geojson', skiSlopes, geometry_field='geom', )
     return HttpResponse(ser, content_type='json')
 
 def facilitiesjson(request):

@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('skiDomain/', views.skiDomain, name='skiDomain'),
-    path('slopesForests', views.slopesForests, name='slopesForests'),
+     path('slopesForests', views.slopesForests, name='slopesForests'),
     path('slopeForests/<int:slope_id>', views.slopeForests, name='slopeForests'),
     path('forests.json', views.forestsjson, name='forestsjson'),
     path('skiSlopes.json', views.skiSlopesjson, name='skiSlopesjson'),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('chairLifts.json', views.chairLiftsjson, name='chairLiftsjson'),
     path('hotel', views.hotel, name='hotel'),
     path('summit', views.summit, name='summit'),
+    
 ]
