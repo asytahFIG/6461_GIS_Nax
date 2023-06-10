@@ -1,108 +1,136 @@
 {% load leaflet_tags %}
 <head>
+    <title>646-1 Projet Nax Mont-Noble</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     {% leaflet_js %} {% leaflet_css %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
 </head>
 <body>
-    <header style=" background-color: cadetblue;">
-        <nav>
-            <ul style="display: flex; justify-content: center; padding: 10px;">
-                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Home</a></li>
-                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">About</a></li>
-                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Services</a></li>
-                <li style="margin: 0 10px;"><a href="#" style="color: aliceblue; text-decoration: none;">Contact</a></li>
-            </ul>
-        </nav>
+    <!-- Navbar (sit on top) -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="#skiDomain" class="w3-bar-item w3-button"><b>646-1</b> Domaine skiable Nax Mont-Noble</a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="#services" class="w3-bar-item w3-button">Services</a>
+            <a href="#forests" class="w3-bar-item w3-button">Domaine forestier</a>
+            <a href="#foodndrinks" class="w3-bar-item w3-button">Restauration</a>
+        </div>
+        </div>
+    </div>
+    <!-- Header -->
+    <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+        <img class="w3-image" src="https://www.thomascrauwels.ch/wp-content/uploads/2020/10/panorama-du-valais-202008_dsc7336-panorama-scaled-scaled-scaled-2048x410.jpg" alt="Domaine skiable" width="1500">
+        <div class="w3-display-middle w3-margin-top w3-center">
+            <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>WELCOME</b></span> <span class="w3-hide-small w3-text-light-grey"><p>NAX MONT NOBLE</p></span></h1>
+        </div>
     </header>
-  <div id="skiDomain" style="width: 100%; height: 100%">
-    {% leaflet_map "skiDomain" callback="main_map_init" %}
-    <script type="text/javascript">
-        // init map at a certain position and zoom
-        function main_map_init(map, options) {
-            map.setView([46.211657, 7.481341], 14);
-            // add a marker
-            var marker = L.marker([46.2253113, 7.4622059]).addTo(map);
-            marker.bindPopup("Nax - Mont-Noble");
+    <!-- Page content -->
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Carte du domaine skiable</h3>
+    </div>
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 600px" id="skiDomain">
+        <!-- Map Section -->
+            {% leaflet_map "skiDomain" callback="main_map_init" %}
+            <script type="text/javascript">
+                // init map at a certain position and zoom
+                function main_map_init(map, options) {
+                    map.setView([46.211657, 7.481341], 14);
+                    // add a marker
+                    var marker = L.marker([46.2253113, 7.4622059]).addTo(map);
+                    marker.bindPopup("Nax - Mont-Noble");
 
-            // polygons
-            var urls = [
-            "{% url 'skiSlopesjson' %}",
-            "{% url 'forestsjson' %}",
-            "{% url 'facilitiesjson' %}",
-            "{% url 'hotelsjson' %}",
-            "{% url 'restaurantsjson' %}",
-            "{% url 'parkingsjson' %}",
-            "{% url 'hutsjson' %}",
-            ];
+                    // polygons
+                    var urls = [
+                    "{% url 'skiSlopesjson' %}",
+                    "{% url 'forestsjson' %}",
+                    "{% url 'facilitiesjson' %}",
+                    "{% url 'hotelsjson' %}",
+                    "{% url 'restaurantsjson' %}",
+                    "{% url 'parkingsjson' %}",
+                    "{% url 'hutsjson' %}",
+                    ];
 
-            // for each url in urls, get the data and add it to the map in a different color
-            urls.forEach(function (url) {
-            $.getJSON(url, function (data) {
-                L.geoJson(data, {
-                style: function (feature) {
-                    if (url == "{% url 'skiSlopesjson' %}") {
-                    return { color: 'grey' };
-                    } else if (url == "{% url 'forestsjson' %}") {
-                    return { color: 'green' };
-                    } else if (url == "{% url 'facilitiesjson' %}") {
-                    return { color: 'blue' };
-                    } else if (url == "{% url 'hotelsjson' %}") {
-                    return { color: 'yellow' };
-                    } else if (url == "{% url 'restaurantsjson' %}") {
-                    return { color: 'orange' };
-                    } else if (url == "{% url 'parkingsjson' %}") {
-                    return { color: 'purple' };
-                    } else if (url == "{% url 'hutsjson' %}") {
-                    return { color: 'brown' };
-                    }
-                },
-                onEachFeature: onEachFeature,
-                }).addTo(map);
-            });
-            });
+                    // for each url in urls, get the data and add it to the map in a different color
+                    urls.forEach(function (url) {
+                    $.getJSON(url, function (data) {
+                        L.geoJson(data, {
+                        style: function (feature) {
+                            if (url == "{% url 'skiSlopesjson' %}") {
+                            return { color: 'grey' };
+                            } else if (url == "{% url 'forestsjson' %}") {
+                            return { color: 'green' };
+                            } else if (url == "{% url 'facilitiesjson' %}") {
+                            return { color: 'blue' };
+                            } else if (url == "{% url 'hotelsjson' %}") {
+                            return { color: 'yellow' };
+                            } else if (url == "{% url 'restaurantsjson' %}") {
+                            return { color: 'orange' };
+                            } else if (url == "{% url 'parkingsjson' %}") {
+                            return { color: 'purple' };
+                            } else if (url == "{% url 'hutsjson' %}") {
+                            return { color: 'brown' };
+                            }
+                        },
+                        onEachFeature: onEachFeature,
+                        }).addTo(map);
+                    });
+                    });
 
-            var pointUrls = [
-            "{% url 'summitsjson' %}",
-            "{% url 'transportationjson' %}",
-            ];
+                    var pointUrls = [
+                    "{% url 'summitsjson' %}",
+                    "{% url 'transportationjson' %}",
+                    ];
 
-            pointUrls.forEach(function (url) {
-            $.getJSON(url, function (data) {
-                L.geoJson(data, {                
-                pointToLayer: function (feature, latlng) {
-                    return L.marker(latlng, {icon: L.icon({
-                        iconUrl: "container_nax/Nax/images/summit.png",
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10],
-                        popupAnchor: [0, -10],
-                        })});
-                },
-                onEachFeature: onEachFeature,
-                }).addTo(map);
-            });
-            });
+                    // display different icons depending on the url
+                    pointUrls.forEach(function (url) {
+                    $.getJSON(url, function (data) {
+                        L.geoJson(data, {                
+                        pointToLayer: function (feature, latlng) {
+                            if (url == "{% url 'summitsjson' %}") {
+                            return L.marker(latlng, {icon: L.icon({
+                                iconUrl: "https://cdn-icons-png.flaticon.com/512/1632/1632789.png",
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10],
+                                popupAnchor: [0, -10],
+                                })});
+                            } else if (url == "{% url 'transportationjson' %}") {
+                            return L.marker(latlng, {icon: L.icon({
+                                iconUrl: "https://cdn-icons-png.flaticon.com/512/944/944551.png",
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10],
+                                popupAnchor: [0, -10],
+                                })});
+                            }
+                        },
+                        onEachFeature: onEachFeature,
+                        }).addTo(map);
+                    });
+                    });
+                    
+                    var lineUrls = [
+                    "{% url 'chairLiftsjson' %}",
+                    ];
 
-            
-            var lineUrls = [
-            "{% url 'chairLiftsjson' %}",
-            ];
+                    lineUrls.forEach(function (url) {
+                    $.getJSON(url, function (data) {
+                        L.geoJson(data, {
+                        style: function (feature) {
+                            return { color: 'red' }; // Modifier le style des lignes selon vos besoins
+                        },
+                        onEachFeature: onEachFeature,
+                        }).addTo(map);
+                    });
+                    });
 
-            lineUrls.forEach(function (url) {
-            $.getJSON(url, function (data) {
-                L.geoJson(data, {
-                style: function (feature) {
-                    return { color: 'red' }; // Modifier le style des lignes selon vos besoins
-                },
-                onEachFeature: onEachFeature,
-                }).addTo(map);
-            });
-            });
-
-            function onEachFeature(feature, layer) {
-              if (feature.properties && feature.properties.name) {
-                layer.bindPopup(feature.properties.name);
-              }
-            }}
-    </script>
-  </div>
+                    function onEachFeature(feature, layer) {
+                    if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(feature.properties.name);
+                    }}
+                }
+            </script>
+        </div>
+    </div>
 </body>
