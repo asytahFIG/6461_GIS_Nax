@@ -22,12 +22,12 @@
     </div>
     <!-- Page content -->
     <!-- Title -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px">
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Domaine forestier</h3>
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Les pistes dans leur domaine forestier</h3>
         <p>Sélectionner une piste pour afficher ses forêts voisines !</p>
     </div>
     <!-- Map -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopeForests"></div>
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopeForests">
         <!-- Map Section -->
         {% leaflet_map "slopeForests" callback="main_map_init" %}
         <script type="text/javascript">
@@ -41,7 +41,7 @@
                 function onEachFeature(feature, layer) {
                     if (feature.properties) {
                         layer.bindPopup(feature.properties.name);
-                        layer.on('click', () => {window.location.href = '/MontNoble/slopeForests/' + feature.properties.pk;})
+                        layer.on('click', () => {window.location.href = '/slopeForests/' + feature.properties.pk;})
                     }}
             }
         </script>
