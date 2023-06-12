@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 from shapely.geometry import Polygon
 from django.core.serializers import serialize
 
-from MontNoble.geometry_manager import load_shapely_from_geodjango
+from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors
 
 def index(request):
     return render (request, 'MontNoble/index.html')
@@ -18,31 +18,49 @@ def skiDomain(request):
     return render(request, 'MontNoble/skiDomain.html', context)
 
 # Create your views here.
-def slopesForests(request):
-    ski_slopes=Ski_slope.objects.order_by('-name')
-    context = { 'ski_slopes':ski_slopes, }
-    return render(request, 'MontNoble/slopesForests.html', context)
 
-def slopeForests(request, slope_id):
+# Services
+def slopesServices(request):
+    return render(request, "MontNoble/slopesServices.html")
 
+def slopeServices(request, slope_id):
     try:
         ski_slope=Ski_slope.objects.get(pk=slope_id)
     except Ski_slope.DoesNotExist:
-        raise Http404("City not found!!")
-    slope_polygon = load_shapely_from_geodjango(ski_slope)
+        raise Http404("Slope not found!!")
+    
+    # Get neigbor services
+    neighborHotels=get_list_of_neighbors(ski_slope, Hotel.objects.order_by('-name'))
+    neighborRestaurants=get_list_of_neighbors(ski_slope, Restaurant.objects.order_by('-name'))
+    neighborHuts=get_list_of_neighbors(ski_slope, Hut.objects.order_by('-name'))
+    
+    # Serialize
+    ski_slope_arr = [ski_slope]
+    slope_ser=serialize('geojson',ski_slope_arr,geometry_field='geom')
+    hotels_ser=serialize('geojson',neighborHotels,geometry_field='geom')
+    restaurants_ser=serialize('geojson',neighborRestaurants,geometry_field='geom')
+    huts_ser=serialize('geojson',neighborHuts,geometry_field='geom')
+
+    context = {'skiSlope': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser}
+    return render(request, "MontNoble/slopeServices.html", context)
+
+def slopesForests(request):
+    return render(request, 'MontNoble/slopesForests.html')
+
+def slopeForests(request, slope_id):
+    try:
+        ski_slope=Ski_slope.objects.get(pk=slope_id)
+    except Ski_slope.DoesNotExist:
+        raise Http404("Slope not found!!")
 
     all_forests=Forest.objects.order_by('-name')
-    neighborForests = []
-    for forest in all_forests:
-        forest_polygon = load_shapely_from_geodjango(forest)
-        if (forest_polygon.intersects(slope_polygon) or forest_polygon.distance(slope_polygon) <= 30):
-            neighborForests.append(forest)
+    neighborForests = get_list_of_neighbors(model=ski_slope, others_list=all_forests)
 
     for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
     ski_slope_arr = [ski_slope]
     ser=serialize('geojson',ski_slope_arr,geometry_field='geom',fields=("name", ))
 
-    return render(request,'MontNoble/slopeForests.html',{'neighborForests': for_ser, 'skiSlope': ser})
+    return render(request,'MontNoble/slopeForests.html', {'neighborForests': for_ser, 'skiSlope': ser})
 
 # Views for services
 def hotel(request):
