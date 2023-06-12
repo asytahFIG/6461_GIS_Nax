@@ -19,12 +19,9 @@ def skiDomain(request):
 
 # Create your views here.
 def slopesForests(request):
-    ski_slopes=Ski_slope.objects.order_by('-name')
-    context = { 'ski_slopes':ski_slopes, }
-    return render(request, 'MontNoble/slopesForests.html', context)
+    return render(request, 'MontNoble/slopesForests.html')
 
 def slopeForests(request, slope_id):
-
     try:
         ski_slope=Ski_slope.objects.get(pk=slope_id)
     except Ski_slope.DoesNotExist:
