@@ -1,0 +1,86 @@
+{% load leaflet_tags %}
+<head>
+    <title>646-1 Projet Nax Mont-Noble - détail vue piste</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    {% leaflet_js %} {% leaflet_css %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+            <a href="/" class="w3-bar-item w3-button"><b>646-1</b> Domaine skiable Nax Mont-Noble</a>
+            <!-- Float links to the right. Hide them on small screens -->
+            <div class="w3-right w3-hide-small">
+                <a href="/skiDomain" class="w3-bar-item w3-button">Vue générale</a>
+                <a href="/slopesForests" class="w3-bar-item w3-button">Domaine forestier</a>
+                <a href="#foodndrinks" class="w3-bar-item w3-button">Restauration</a>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <!-- Title -->
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" id="slopeName"></h3>
+    </div>
+    <!-- Map -->
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopeForests">
+        <!-- Map Section -->
+        {% leaflet_map "slopeForests" callback="main_map_init" %}
+        <script type="text/javascript">
+
+            // init map at a certain position and zoom
+            function main_map_init(map, options) {
+                map.setView([46.211657, 7.481341], 14);
+
+                // context keys
+                var urls = [
+                "{{huts|escapejs }}",
+                "{{skiSlope|escapejs }}",
+                "{{hotels|escapejs }}",
+                "{{restaurants|escapejs }}",
+               
+            ]
+            
+            // polygons
+         urls.forEach(function (url) {                
+                var shapes = JSON.parse(url);
+                var type = shapes.features[0].properties.type;
+                    var geojsonLayer = L.geoJson(shapes, {
+                        style: function (feature) {
+                            switch (type) {
+                            case"hotel":
+                                return { color: 'yellow' };
+                            case "restaurant":
+                                return { color: 'orange' };
+                            case "parking":
+                                return { color: 'purple' };
+                            case "hut":
+                                return { color: 'brown' };
+                            case "ski_slope":
+                                return { color: 'grey' };
+                            }
+                            },onEachFeature: onEachFeature,
+                        }).addTo(map)
+                        geojsonLayer.eachLayer(function(layer){
+                        layer.openPopup();
+                        });
+                    });
+
+                // Set page title
+                //document.getElementById("slopeName").textContent = skiSlope.features[0].properties.name
+                //+ " et ses " + hotels.features.length + " services"
+            }
+
+            function onEachFeature(feature, layer) {
+                if (feature.properties) {
+                    layer.bindPopup(feature.properties.name, {autoClose:false}).openPopup();
+                    //layer.bindPopup(feature.properties.name);
+                }
+            }
+
+        </script>
+    </div>
+</body>
