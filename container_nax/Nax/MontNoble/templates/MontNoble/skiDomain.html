@@ -16,7 +16,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="/skiDomain" class="w3-bar-item w3-button">Vue générale</a>
                 <a href="/slopesForests" class="w3-bar-item w3-button">Domaine forestier</a>
-                <a href="#foodndrinks" class="w3-bar-item w3-button">Restauration</a>
+                <a href="/slopesServices" class="w3-bar-item w3-button">Restauration</a>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Carte du domaine skiable</h3>
     </div>
     <!-- Map -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="skiDomain">
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px;" id="skiDomain">
         <!-- Map Section -->
             {% leaflet_map "skiDomain" callback="main_map_init" %}
             <script type="text/javascript">
@@ -48,6 +48,10 @@
                     "{% url 'hutsjson' %}",
                     ];
 
+                    // variable to store the didok reference of the transportation points -> to be moved later
+                    var nax_transportation_didok = 8570941;
+                    var sion_transportation_didok = 8501994;
+                    
                     // for each url in urls, get the data and add it to the map in a different color
                     urls.forEach(function (url) {
                     $.getJSON(url, function (data) {
