@@ -11,7 +11,7 @@ def is_neighbor(model, other):
       other_polygon = load_shapely_from_geodjango(other)
       
       # Using minimal distance
-      if (model_polygon.intersects(other_polygon) or model_polygon.distance(other_polygon) <= 30):
+      if (model_polygon.intersects(other_polygon) or model_polygon.distance(other_polygon) <= 50):
             return True
       return False
 
