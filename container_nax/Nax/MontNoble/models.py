@@ -8,7 +8,7 @@ class Ski_slope(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
-    difficulty = models.IntegerField
+    difficulty = models.IntegerField()
     class Meta:
        db_table = "Ski_slope"
 
