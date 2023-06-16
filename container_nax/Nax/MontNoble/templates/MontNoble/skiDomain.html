@@ -74,27 +74,6 @@
                     });
                     });
 
-                    // display another color for the ski slopes depending on their difficulty
-                    // code to be moved (Benjamin)
-                    /*$.getJSON("{% url 'skiSlopesjson' %}", function (data) {
-                    L.geoJson(data, {
-                        style: function (feature) {
-                        if (feature.properties.difficulty == 1) {
-                            return { color: 'white' };
-                        } else if (feature.properties.difficulty == 2) {
-                            return { color: 'yellow' };
-                        } else if (feature.properties.difficulty == 3) {
-                            return { color: 'blue' };
-                        } else if (feature.properties.difficulty == 4) {
-                            return { color: 'red' };
-                        } else if (feature.properties.difficulty == 5) {
-                            return { color: 'black' };
-                        }
-                        },
-                        onEachFeature: onEachFeature,
-                    }).addTo(map);
-                    });*/
-
                     var pointUrls = [
                     "{% url 'summitsjson' %}",
                     "{% url 'transportationjson' %}",

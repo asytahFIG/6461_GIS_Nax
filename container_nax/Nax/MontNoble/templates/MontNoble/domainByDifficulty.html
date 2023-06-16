@@ -1,12 +1,14 @@
 {% load leaflet_tags %}
+
 <head>
-    <title>646-1 Projet Nax Mont-Noble - détail vue piste</title> 
+    <title>646-1 Projet Nax Mont-Noble - détail vue piste</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     {% leaflet_js %} {% leaflet_css %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
+
 <body>
     <!-- Navbar -->
     <div class="w3-top">
@@ -37,47 +39,79 @@
 
                 // context keys
                 var urls = [
-                "{{huts|escapejs }}",
-                "{{skiSlopes|escapejs }}",
-                "{{hotels|escapejs }}",
-                "{{restaurants|escapejs }}",
-               
-            ]
-            
-            // polygons
-         urls.forEach(function (url) {                
-                var shapes = JSON.parse(url);
-                if (shapes.features.length > 0){
-                var type = shapes.features[0].properties.type;
-                    var geojsonLayer = L.geoJson(shapes, {
-                        style: function (feature) {
-                            switch (type) {
-                            case"hotel":
-                                return { color: 'yellow' };
-                            case "restaurant":
-                                return { color: 'orange' };
-                            case "parking":
-                                return { color: 'purple' };
-                            case "hut":
-                                return { color: 'brown' };
-                            case "ski_slope":
-                                return { color: 'grey' };
-                            }
-                            },onEachFeature: onEachFeature,
-                        }).addTo(map)
-                      
-                    }
-                    });
+                    "{{huts|escapejs }}",
+                    "{{skiSlopes|escapejs }}",
+                    "{{hotels|escapejs }}",
+                    "{{restaurants|escapejs }}",
 
-                // Set page title
-                //document.getElementById("slopeName").textContent = skiSlope.features[0].properties.name
-                //+ " et ses " + hotels.features.length + " services"
-            }
+                ]
+
+                // polygons
+                urls.forEach(function (url) {
+                    var shapes = JSON.parse(url);
+                    if (shapes.features.length > 0) {
+                        var type = shapes.features[0].properties.type;
+                        var geojsonLayer = L.geoJson(shapes, {
+                            style: function (feature) {
+                                switch (type) {
+                                    case "hotel":
+                                        return { color: 'yellow' };
+                                    case "restaurant":
+                                        return { color: 'orange' };
+                                    case "parking":
+                                        return { color: 'purple' };
+                                    case "hut":
+                                        return { color: 'brown' };
+                                    case "ski_slope":
+                                        switch (feature.properties.difficulty) {
+                                            case 1: return { color: 'green' };
+                                            case 2:
+                                            case 3: return { color: 'blue' };
+                                            case 4: return { color: 'red' };
+                                            case 5: return { color: 'black' };
+                                        }
+                                }
+                            }, onEachFeature: onEachFeature,
+                        }).addTo(map)
+                    }
+                });
+
+                var lineUrls = [
+                    "{{chairLifts|escapejs }}",
+                ];
+
+                lineUrls.forEach(function (url) {
+                    var shapes = JSON.parse(url);
+                    if (shapes.features.length > 0) {
+                        L.geoJson(shapes, {
+                            style: function (feature) {
+                                return { color: 'red' }; // Modifier le style des lignes selon vos besoins
+                            },
+                            onEachFeature: onEachFeature,
+                        }).addTo(map);
+                    };
+                });
+
+            } // main map init
 
             function onEachFeature(feature, layer) {
                 if (feature.properties) {
-                    layer.bindPopup(feature.properties.name, {autoClose:false}).openPopup();
-                    //layer.bindPopup(feature.properties.name);
+                    var popupContent = "";
+                    for (var property in feature.properties) {
+                        if (property != "type" && property != "altitude" && property != "available" && property != "protected" && property != "pk") {
+                            popupContent += property + ": " + feature.properties[property] + "<br>";
+                        } else if (property === "altitude") {
+                            popupContent += property + ": " + feature.properties[property] + " m" + "<br>";
+                        } else if (property === "available" || property === "protected") {
+                            // 1 = true, 0 = false
+                            if (feature.properties[property] == 1) {
+                                popupContent += property + ": yes" + "<br>";
+                            } else if (feature.properties[property] == 0) {
+                                popupContent += property + ": no" + "<br>";
+                            }
+                        }
+                    }
+                    layer.bindPopup(popupContent);
                 }
             }
 

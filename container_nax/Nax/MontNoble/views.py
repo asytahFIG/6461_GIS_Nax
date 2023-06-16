@@ -7,7 +7,7 @@ from django.core.serializers import serialize
 from shapely.geometry import Polygon
 from django.core.serializers import serialize
 
-from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors
+from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors_polygon, get_list_of_neighbors_line
 
 def index(request):
     return render (request, 'MontNoble/index.html')
@@ -35,17 +35,19 @@ def domainByDifficulty(request, difficulty):
 
     for ski_slope in ski_slopes:
         # Get neigbor services
-        neighborHotels.extend(get_list_of_neighbors(ski_slope, Hotel.objects.order_by('-name')))
-        neighborRestaurants.extend(get_list_of_neighbors(ski_slope, Restaurant.objects.order_by('-name')))
-        neighborHuts.extend(get_list_of_neighbors(ski_slope, Hut.objects.order_by('-name')))
+        neighborHotels.extend(get_list_of_neighbors_polygon(ski_slope, Hotel.objects.order_by('-name')))
+        neighborRestaurants.extend(get_list_of_neighbors_polygon(ski_slope, Restaurant.objects.order_by('-name')))
+        neighborHuts.extend(get_list_of_neighbors_polygon(ski_slope, Hut.objects.order_by('-name')))
 
     # Serialize
     slope_ser=serialize('geojson',ski_slopes,geometry_field='geom')
     hotels_ser=serialize('geojson',neighborHotels,geometry_field='geom')
     restaurants_ser=serialize('geojson',neighborRestaurants,geometry_field='geom')
     huts_ser=serialize('geojson',neighborHuts,geometry_field='geom')
+    chair_lift_ser = serialize('geojson',Chair_lift.objects.all() ,geometry_field='geom')
 
-    context = {'skiSlopes': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser}
+    context = {'skiSlopes': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser,
+               'chairLifts': chair_lift_ser}
     return render(request, "MontNoble/domainByDifficulty.html", context)
 
 
@@ -59,9 +61,9 @@ def slopeServices(request, slope_id):
         raise Http404("Slope not found!!")
     
     # Get neigbor services
-    neighborHotels=get_list_of_neighbors(ski_slope, Hotel.objects.order_by('-name'))
-    neighborRestaurants=get_list_of_neighbors(ski_slope, Restaurant.objects.order_by('-name'))
-    neighborHuts=get_list_of_neighbors(ski_slope, Hut.objects.order_by('-name'))
+    neighborHotels=get_list_of_neighbors_polygon(ski_slope, Hotel.objects.order_by('-name'))
+    neighborRestaurants=get_list_of_neighbors_polygon(ski_slope, Restaurant.objects.order_by('-name'))
+    neighborHuts=get_list_of_neighbors_polygon(ski_slope, Hut.objects.order_by('-name'))
     
     # Serialize
     ski_slope_arr = [ski_slope]
@@ -83,13 +85,27 @@ def slopeForests(request, slope_id):
         raise Http404("Slope not found!!")
 
     all_forests=Forest.objects.order_by('-name')
-    neighborForests = get_list_of_neighbors(model=ski_slope, others_list=all_forests)
+    neighborForests = get_list_of_neighbors_polygon(model=ski_slope, others_list=all_forests)
 
     for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
     ski_slope_arr = [ski_slope]
     ser=serialize('geojson',ski_slope_arr,geometry_field='geom',fields=("name", ))
 
     return render(request,'MontNoble/slopeForests.html', {'neighborForests': for_ser, 'skiSlope': ser})
+
+def chairLiftForests(request, chairLift_id):
+    try:
+        chair_lift=Chair_lift.objects.get(pk=chairLift_id)
+    except Ski_slope.DoesNotExist:
+        raise Http404("Slope not found!!")
+
+    all_forests=Forest.objects.order_by('-name')
+    neighborForests = get_list_of_neighbors_line(model=chair_lift, others_list=all_forests)
+
+    for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
+    ser=serialize('geojson',[chair_lift],geometry_field='geom',fields=("name", ))
+
+    return render(request,'MontNoble/chairLiftForests.html', {'neighborForests': for_ser, 'chairLift': ser})
 
 # Views for services
 def hotel(request):

@@ -1,12 +1,14 @@
 {% load leaflet_tags %}
+
 <head>
-    <title>646-1 Projet Nax Mont-Noble</title> 
+    <title>646-1 Projet Nax Mont-Noble</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     {% leaflet_js %} {% leaflet_css %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>  
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
+
 <body>
     <!-- Navbar -->
     <div class="w3-top">
@@ -36,13 +38,34 @@
                 map.setView([46.211657, 7.481341], 14);
                 // display all slopes
                 $.getJSON("{% url 'skiSlopesjson' %}", function (data) {
-                    L.geoJson(data, {style: function (feature) {return { color: 'grey' };},
-                            onEachFeature: onEachFeature,}).addTo(map);})
+                    L.geoJson(data, {
+                        style: function (feature) { return { color: 'grey' }; },
+                        onEachFeature: onEachFeature,
+                    }).addTo(map);
+                })
+
+                // display chair lifts
+                var lineUrls = ["{% url 'chairLiftsjson' %}",];
+                lineUrls.forEach(function (url) {
+                    $.getJSON(url, function (data) {
+                        L.geoJson(data, {
+                            style: function (feature) {
+                                return { color: 'red' }; // Modifier le style des lignes selon vos besoins
+                            },
+                            onEachFeature: onEachFeature,
+                        }).addTo(map);
+                    });
+                });
+
                 function onEachFeature(feature, layer) {
                     if (feature.properties) {
                         layer.bindPopup(feature.properties.name);
-                        layer.on('click', () => {window.location.href = '/slopeForests/' + feature.properties.pk;})
-                    }}
+                        if (feature.properties.type == "forest")
+                            layer.on('click', () => { window.location.href = '/slopeForests/' + feature.properties.pk; })
+                        else
+                        layer.on('click', () => { window.location.href = '/chairLiftForests/' + feature.properties.pk; })
+                    }
+                }
             }
         </script>
     </div>
