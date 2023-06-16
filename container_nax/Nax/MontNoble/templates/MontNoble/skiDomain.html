@@ -135,7 +135,7 @@
                         if (feature.properties) {
                             var popupContent = "";
                             for (var property in feature.properties) {
-                                if (property != "type" && property != "altitude" && property != "available" && property != "protected" && property != "pk") {
+                                if (property != "type" && property != "obj_type" && property != "altitude" && property != "available" && property != "protected" && property != "pk") {
                                     popupContent += property + ": " + feature.properties[property] + "<br>";
                                 } else if (property === "altitude") {
                                     popupContent += property + ": " + feature.properties[property] + " m" + "<br>";
