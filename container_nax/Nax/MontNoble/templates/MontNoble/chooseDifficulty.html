@@ -15,7 +15,7 @@
             <div class="w3-right w3-hide-small">
                 <a href="/skiDomain" class="w3-bar-item w3-button">Vue générale</a>
                 <a href="/slopesForests" class="w3-bar-item w3-button">Domaine forestier</a>
-                <a href="/slopesServices" class="w3-bar-item w3-button">Restauration</a>
+                <a href="/chooseDifficulty" class="w3-bar-item w3-button">Experience</a>
             </div>
         </div>
     </div>
@@ -25,38 +25,29 @@
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Une expérience personalisée</h3>
         <p>Sélectionner votre niveau pour afficher les lieux accessibles !</p>
     </div>
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopeForests">
-        <div id="grid">
-            <div class="center_content">
-                <a href="/domainByDifficulty/1" class="difficultyLink">Débutant</a>
+    <div class="w3-row-padding" style="margin-left: 60px;">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <div class="w3-display-container" style="width: 350px;">
+                <div class="w3-display-topleft w3-black w3-padding">Expérience</div>
+                    <a href="/domainByDifficulty/1" class="difficultyLink">Débutant</a>
             </div>
-
-            <div class="center_content">
-                <a href="/domainByDifficulty/2" class="difficultyLink">Intermédiaire</a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <div class="w3-display-container" style="width: 350px;">
+                <div class="w3-display-topleft w3-black w3-padding">Expérience</div>
+                    <a href="/domainByDifficulty/2" class="difficultyLink">Intermédiaire</a>
             </div>
-
-            <div class="center_content">
-                <a href="/domainByDifficulty/3" class="difficultyLink">Avancé</a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <div class="w3-display-container" style="width: 350px;">
+                <div class="w3-display-topleft w3-black w3-padding">Expérience</div>
+                    <a href="/domainByDifficulty/3" class="difficultyLink">Avancé</a>
             </div>
         </div>
     </div>
 
 
     <style>
-        .center_content {
-            display: flex;
-            align-content: center;
-        }
-
-        #grid {
-            margin: 2vw;
-            margin-top: 20vh;
-            display: grid;
-            grid-template-columns: 33% 33% 33%;
-            grid-gap: 3vw;
-            grid-template-rows: auto
-        }
-
         .difficultyLink {
             display: block !important;
             font-size: larger;
