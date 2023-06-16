@@ -74,56 +74,55 @@ def summit(request):
 # Serialized objects to show on map - polygons
 def forestsjson(request):
     forests=Forest.objects.all()
-    ser=serialize('geojson', forests, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', forests, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def skiSlopesjson(request):
     skiSlopes=Ski_slope.objects.all()
-    ser=serialize('geojson', skiSlopes, geometry_field='geom', )
+    ser=serialize('geojson', skiSlopes, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def facilitiesjson(request):
     facilities=Facilities.objects.all()
-    ser=serialize('geojson', facilities, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', facilities, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def hotelsjson(request):
     hotels=Hotel.objects.all()
-    ser=serialize('geojson', hotels, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', hotels, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def restaurantsjson(request):
     restaurants=Restaurant.objects.all()
-    ser=serialize('geojson', restaurants, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', restaurants, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def parkingsjson(request):
     parkings=Parking.objects.all()
-    ser=serialize('geojson', parkings, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', parkings, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def hutsjson(request):
     huts=Hut.objects.all()
-    ser=serialize('geojson', huts, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', huts, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 
 # Serialized objects to show on map - points
-
 def summitsjson(request):
     summits=Summit.objects.all()
-    ser=serialize('geojson', summits, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', summits, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 def transportationjson(request):
     transportation=Transportation.objects.all()
-    ser=serialize('geojson', transportation, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', transportation, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 # Serilized objects to show on map - lines
 def chairLiftsjson(request):
     chairLifts=Chair_lift.objects.all()
-    ser=serialize('geojson', chairLifts, geometry_field='geom', fields=('name', ))
+    ser=serialize('geojson', chairLifts, geometry_field='geom')
     return HttpResponse(ser, content_type='json')
 
 
