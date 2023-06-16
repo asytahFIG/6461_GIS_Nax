@@ -1,0 +1,67 @@
+<head>
+    <title>646-1 Projet Nax Mont-Noble</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+            <a href="/" class="w3-bar-item w3-button"><b>646-1</b> Domaine skiable Nax Mont-Noble</a>
+            <!-- Float links to the right. Hide them on small screens -->
+            <div class="w3-right w3-hide-small">
+                <a href="/skiDomain" class="w3-bar-item w3-button">Vue générale</a>
+                <a href="/slopesForests" class="w3-bar-item w3-button">Domaine forestier</a>
+                <a href="/slopesServices" class="w3-bar-item w3-button">Restauration</a>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <!-- Title -->
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Une expérience personalisée</h3>
+        <p>Sélectionner votre niveau pour afficher les lieux accessibles !</p>
+    </div>
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopeForests">
+        <div id="grid">
+            <div class="center_content">
+                <a href="/domainByDifficulty/1" class="difficultyLink">Débutant</a>
+            </div>
+
+            <div class="center_content">
+                <a href="/domainByDifficulty/2" class="difficultyLink">Intermédiaire</a>
+            </div>
+
+            <div class="center_content">
+                <a href="/domainByDifficulty/3" class="difficultyLink">Avancé</a>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        .center_content {
+            display: flex;
+            align-content: center;
+        }
+
+        #grid {
+            margin: 2vw;
+            margin-top: 20vh;
+            display: grid;
+            grid-template-columns: 33% 33% 33%;
+            grid-gap: 3vw;
+            grid-template-rows: auto
+        }
+
+        .difficultyLink {
+            display: block !important;
+            font-size: larger;
+            padding: 12vh;
+            border: solid 3px;
+            border-radius: 2vh;
+        }
+    </style>

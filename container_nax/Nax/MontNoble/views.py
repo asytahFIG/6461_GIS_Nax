@@ -20,6 +20,35 @@ def skiDomain(request):
 # Create your views here.
 
 # Services
+def chooseDifficulty(request):
+    return render(request, "MontNoble/chooseDifficulty.html")
+
+def domainByDifficulty(request, difficulty):
+    ski_slopes=Ski_slope.objects.order_by('-name')
+
+    if (difficulty == 1):
+        ski_slopes = [s for s in ski_slopes if (s.difficulty <= 2)]
+    elif (difficulty == 2):
+        ski_slopes = [s for s in ski_slopes if (s.difficulty <= 4)]
+
+    neighborHotels, neighborRestaurants,  neighborHuts = [], [], []
+
+    for ski_slope in ski_slopes:
+        # Get neigbor services
+        neighborHotels.extend(get_list_of_neighbors(ski_slope, Hotel.objects.order_by('-name')))
+        neighborRestaurants.extend(get_list_of_neighbors(ski_slope, Restaurant.objects.order_by('-name')))
+        neighborHuts.extend(get_list_of_neighbors(ski_slope, Hut.objects.order_by('-name')))
+
+    # Serialize
+    slope_ser=serialize('geojson',ski_slopes,geometry_field='geom')
+    hotels_ser=serialize('geojson',neighborHotels,geometry_field='geom')
+    restaurants_ser=serialize('geojson',neighborRestaurants,geometry_field='geom')
+    huts_ser=serialize('geojson',neighborHuts,geometry_field='geom')
+
+    context = {'skiSlopes': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser}
+    return render(request, "MontNoble/domainByDifficulty.html", context)
+
+
 def slopesServices(request):
     return render(request, "MontNoble/slopesServices.html")
 

@@ -11,6 +11,8 @@ urlpatterns = [
     path('slopeServices/<int:slope_id>', views.slopeServices, name='slopeServices'),
     path('slopesForests', views.slopesForests, name='slopesForests'),
     path('slopeForests/<int:slope_id>', views.slopeForests, name='slopeForests'),
+    path('chooseDifficulty', views.chooseDifficulty, name='chooseDifficulty'),
+    path('domainByDifficulty/<int:difficulty>', views.domainByDifficulty, name='domainByDifficulty'),
 
     # Json to load
     path('forests.json', views.forestsjson, name='forestsjson'),
