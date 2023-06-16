@@ -29,8 +29,8 @@ class Transportation(models.Model):
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
     dest = models.CharField(max_length=100)
-    available = models.IntegerField
-    altitude =  models.IntegerField
+    available = models.IntegerField(max_length=1)
+    altitude =  models.IntegerField(max_length=6)
     subtype = models.CharField(max_length=100)
     class Meta:
         db_table = "Transportation"
@@ -41,8 +41,8 @@ class Parking(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
-    capacity = models.IntegerField
-    available = models.IntegerField
+    capacity = models.IntegerField(max_length=6)
+    available = models.IntegerField(max_length=1)
     class Meta:
         db_table = "Parking"
 
@@ -54,7 +54,7 @@ class Restaurant(models.Model):
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
     cost = models.CharField(max_length=100)
-    available = models.IntegerField
+    available = models.IntegerField(max_length=1)
     class Meta:
         db_table = "Restaurant"
 
@@ -65,8 +65,8 @@ class Hotel(models.Model):
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
     cost = models.CharField(max_length=100)
-    available = models.IntegerField
-    nb_beds = models.IntegerField
+    available = models.IntegerField(max_length=1)
+    nb_beds = models.IntegerField(max_length=6)
     class Meta:
         db_table = "Hotel"
 
@@ -76,9 +76,9 @@ class Hut(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
-    altitude = models.IntegerField
-    available = models.IntegerField
-    nb_beds = models.IntegerField
+    altitude = models.IntegerField(max_length=6)
+    available = models.IntegerField(max_length=1)
+    nb_beds = models.IntegerField(max_length=6)
     class Meta:
         db_table = "Hut"
 
@@ -89,7 +89,7 @@ class Facilities(models.Model):
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
     function = models.CharField(max_length=100)
-    available = models.IntegerField
+    available = models.IntegerField()
     class Meta:
         db_table = "Facilities"
 
@@ -100,7 +100,7 @@ class Forest(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
-    protected = models.IntegerField
+    protected = models.IntegerField(max_length=1)
     class Meta:
         db_table = "Forest"
 
@@ -111,7 +111,7 @@ class Summit(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
     obj_type = models.CharField(max_length=100)
-    altitude =  models.IntegerField
+    altitude =  models.IntegerField(max_length=6)
     class Meta:
         db_table = "Summit"
 
