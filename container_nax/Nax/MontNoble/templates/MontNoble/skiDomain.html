@@ -26,7 +26,7 @@
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Carte du domaine skiable</h3>
     </div>
     <!-- Map -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px;" id="skiDomain">
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; min-height: 600px;" id="skiDomain">
         <!-- Map Section -->
             {% leaflet_map "skiDomain" callback="main_map_init" %}
             <script type="text/javascript">
@@ -47,19 +47,13 @@
                     "{% url 'parkingsjson' %}",
                     "{% url 'hutsjson' %}",
                     ];
-
-                    // variable to store the didok reference of the transportation points -> to be moved later
-                    var nax_transportation_didok = 8570941;
-                    var sion_transportation_didok = 8501994;
                     
                     // for each url in urls, get the data and add it to the map in a different color
                     urls.forEach(function (url) {
                     $.getJSON(url, function (data) {
                         L.geoJson(data, {
                         style: function (feature) {
-                            if (url == "{% url 'skiSlopesjson' %}") {
-                            return { color: 'grey' };
-                            } else if (url == "{% url 'forestsjson' %}") {
+                            if (url == "{% url 'forestsjson' %}") {
                             return { color: 'green' };
                             } else if (url == "{% url 'facilitiesjson' %}") {
                             return { color: 'blue' };
@@ -69,6 +63,8 @@
                             return { color: 'orange' };
                             } else if (url == "{% url 'parkingsjson' %}") {
                             return { color: 'purple' };
+                            }else if (url == "{% url 'skiSlopesjson' %}") {
+                            return { color: 'grey' };
                             } else if (url == "{% url 'hutsjson' %}") {
                             return { color: 'brown' };
                             }
@@ -78,30 +74,61 @@
                     });
                     });
 
+                    // display another color for the ski slopes depending on their difficulty
+                    // code to be moved (Benjamin)
+                    /*$.getJSON("{% url 'skiSlopesjson' %}", function (data) {
+                    L.geoJson(data, {
+                        style: function (feature) {
+                        if (feature.properties.difficulty == 1) {
+                            return { color: 'white' };
+                        } else if (feature.properties.difficulty == 2) {
+                            return { color: 'yellow' };
+                        } else if (feature.properties.difficulty == 3) {
+                            return { color: 'blue' };
+                        } else if (feature.properties.difficulty == 4) {
+                            return { color: 'red' };
+                        } else if (feature.properties.difficulty == 5) {
+                            return { color: 'black' };
+                        }
+                        },
+                        onEachFeature: onEachFeature,
+                    }).addTo(map);
+                    });*/
+
                     var pointUrls = [
                     "{% url 'summitsjson' %}",
                     "{% url 'transportationjson' %}",
                     ];
 
-                    // display different icons depending on the url
+                    // display different icons depending on the "type" of the summit point (pass or summit) same icon for all transportation
                     pointUrls.forEach(function (url) {
                     $.getJSON(url, function (data) {
                         L.geoJson(data, {                
                         pointToLayer: function (feature, latlng) {
                             if (url == "{% url 'summitsjson' %}") {
-                            return L.marker(latlng, {icon: L.icon({
-                                iconUrl: "https://cdn-icons-png.flaticon.com/512/1632/1632789.png",
-                                iconSize: [20, 20],
-                                iconAnchor: [10, 10],
-                                popupAnchor: [0, -10],
-                                })});
-                            } else if (url == "{% url 'transportationjson' %}") {
-                            return L.marker(latlng, {icon: L.icon({
-                                iconUrl: "https://cdn-icons-png.flaticon.com/512/944/944551.png",
-                                iconSize: [20, 20],
-                                iconAnchor: [10, 10],
-                                popupAnchor: [0, -10],
-                                })});
+                                if (feature.properties.type == "summit") {
+                                    return L.marker(latlng, {icon: L.icon({
+                                    iconUrl: "https://cdn-icons-png.flaticon.com/512/1632/1632789.png",
+                                    iconSize: [20, 20],
+                                    iconAnchor: [10, 10],
+                                    popupAnchor: [0, -10],
+                                    })});
+                                } else if (feature.properties.type == "pass") {
+                                    return L.marker(latlng, {icon: L.icon({
+                                    iconUrl: "https://img.favpng.com/20/17/5/mountain-pass-information-symbol-wikipedia-png-favpng-Te18Dnrx4um0pvizML3t0gQnM_t.jpg",
+                                    iconSize: [20, 20],
+                                    iconAnchor: [10, 10],
+                                    popupAnchor: [0, -10],
+                                    })});
+                                }
+                            }
+                            if (url == "{% url 'transportationjson' %}") {
+                                return L.marker(latlng, {icon: L.icon({
+                                    iconUrl: "https://cdn-icons-png.flaticon.com/512/944/944551.png",
+                                    iconSize: [20, 20],
+                                    iconAnchor: [10, 10],
+                                    popupAnchor: [0, -10],
+                                    })});
                             }
                         },
                         onEachFeature: onEachFeature,
@@ -124,10 +151,27 @@
                     });
                     });
 
+                    // function onEachFeature : add a popup with all the properties except type, sub-type and geometry.
                     function onEachFeature(feature, layer) {
-                    if (feature.properties && feature.properties.name) {
-                        layer.bindPopup(feature.properties.name);
-                    }}
+                        if (feature.properties) {
+                            var popupContent = "";
+                            for (var property in feature.properties) {
+                                if (property != "type" && property != "altitude" && property != "available" && property != "protected" && property != "pk") {
+                                    popupContent += property + ": " + feature.properties[property] + "<br>";
+                                } else if (property === "altitude") {
+                                    popupContent += property + ": " + feature.properties[property] + " m" + "<br>";
+                                } else if (property === "available" || property === "protected") {
+                                    // 1 = true, 0 = false
+                                    if (feature.properties[property] == 1) {
+                                        popupContent += property + ": yes" + "<br>";
+                                    } else if (feature.properties[property] == 0) {
+                                        popupContent += property + ": no" + "<br>";
+                                    }
+                                }
+                            }
+                            layer.bindPopup(popupContent);
+                        }
+                    }
                 }
             </script>
         </div>

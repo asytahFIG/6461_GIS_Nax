@@ -27,7 +27,7 @@
         <p>Sélectionner une piste pour afficher ses services environnants !</p>
     </div>
     <!-- Map -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; height: 800px" id="slopesServices">
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; min-height: 600px;" id="slopesServices">
         <!-- Map Section -->
         {% leaflet_map "slopesServices" callback="main_map_init" %}
         <script type="text/javascript">
