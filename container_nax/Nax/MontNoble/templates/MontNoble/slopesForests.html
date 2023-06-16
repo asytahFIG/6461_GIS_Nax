@@ -60,10 +60,12 @@
                 function onEachFeature(feature, layer) {
                     if (feature.properties) {
                         layer.bindPopup(feature.properties.name);
-                        if (feature.properties.type == "forest")
+                        if (feature.properties.type == "ski_slope")
                             layer.on('click', () => { window.location.href = '/slopeForests/' + feature.properties.pk; })
-                        else
-                        layer.on('click', () => { window.location.href = '/chairLiftForests/' + feature.properties.pk; })
+                        else{
+                            alert('JHAHAHAA')
+                            layer.on('click', () => { window.location.href = '/chairLiftForests/' + feature.properties.pk; })
+                    }
                     }
                 }
             }
