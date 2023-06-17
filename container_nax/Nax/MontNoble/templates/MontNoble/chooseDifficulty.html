@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <head>
     <title>646-1 Projet Nax Mont-Noble</title>
     <meta charset="UTF-8">
@@ -5,7 +6,6 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
-
 <body>
     <!-- Navbar -->
     <div class="w3-top">
@@ -19,27 +19,34 @@
             </div>
         </div>
     </div>
+    <!-- Header -->
+    <header class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;" id="chooseDifficultyHeader">
+        <img class="w3-image" src="https://www.thomascrauwels.ch/wp-content/uploads/2020/10/panorama-du-valais-202008_dsc7336-panorama-scaled-scaled-scaled-2048x410.jpg" alt="Domaine skiable, picture by @thomascrauwels" style="width:1500px; height:180px; object-fit:none; object-position: 0 0;">
+        <div class="w3-display-middle w3-margin-top w3-center">
+            <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>NAX TÉLÉ MONT-NOBLE</b></span></h1>
+        </div>
+    </header>
     <!-- Page content -->
     <!-- Title -->
-    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;">
+    <div class="w3-display-container w3-content w3-wide" style="max-width:1500px;">
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Une expérience personalisée</h3>
         <p>Sélectionner votre niveau pour afficher les lieux accessibles !</p>
     </div>
-    <div class="w3-row-padding" style="margin-left: 60px;">
+    <div class="w3-row-padding" style="margin-left:100px;">
         <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container" style="width: 350px;">
+            <div class="w3-display-container" style="min-width: 250px; max-width: 350px;">
                 <div class="w3-display-topleft w3-black w3-padding">⭐</div>
                     <a href="/domainByDifficulty/1" class="difficultyLink">DÉBUTANT</a>
             </div>
         </div>
         <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container" style="width: 350px;">
+            <div class="w3-display-container" style="min-width: 250px; max-width: 350px;">
                 <div class="w3-display-topleft w3-black w3-padding">⭐⭐</div>
                     <a href="/domainByDifficulty/2" class="difficultyLink">INTERMÉDIAIRE</a>
             </div>
         </div>
         <div class="w3-col l3 m6 w3-margin-bottom">
-            <div class="w3-display-container" style="width: 350px;">
+            <div class="w3-display-container" style="min-width: 250px; max-width: 350px;">
                 <div class="w3-display-topleft w3-black w3-padding">⭐⭐⭐</div>
                     <a href="/domainByDifficulty/3" class="difficultyLink">AVANCÉ</a>
             </div>
@@ -52,8 +59,10 @@
             display: block !important;
             text-align: center;
             font-size: 1.5em;
-            padding: 64px;
+            padding-top: 64px;
+            padding-bottom: 64px;
             border: solid 3px;
             border-radius: 2vh;
         }
     </style>
+</body>
