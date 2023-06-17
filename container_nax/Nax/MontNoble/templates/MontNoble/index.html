@@ -1,155 +1,20 @@
-<!DOCTYPE html>
-{% load leaflet_tags %}
-<head>
-    <title>646-1 Projet Nax Mont-Noble</title> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    {% leaflet_js %} {% leaflet_css %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-map.js?key=0pOi9O64WcMTIXap1H9yiPHEZrjyUQEF"></script>
-    <script src="https://www.mapquestapi.com/sdk/leaflet/v2.2/mq-routing.js?key=0pOi9O64WcMTIXap1H9yiPHEZrjyUQEF"></script>
-</head>
-<body>
-    <!-- Navbar -->
-    <div class="w3-top">
-        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-            <a href="#home" class="w3-bar-item w3-button"><b>646-1</b> Domaine skiable Nax Mont-Noble</a>
-            <!-- Float links to the right. Hide them on small screens -->
-            <div class="w3-right w3-hide-small">
-                <a href="/skiDomain" class="w3-bar-item w3-button">Vue générale</a>
-                <a href="/slopesForests" class="w3-bar-item w3-button">Domaine forestier</a>
-                <a href="/chooseDifficulty" class="w3-bar-item w3-button">Experience</a>
-            </div>
-        </div>
+{% extends 'outerHtml.html'%}
+{% block content %}
+    {% load leaflet_tags %}
+    <!-- About Section -->
+    <div class="w3-container w3-padding-32" id="about">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
+        <p class="w3-center">Bienvenue dans un domaine skiable à taille humaine et familiale, où vous pourrez profiter de skier ou snowboarder en famille, en plein 
+            coeur du Valais et à 19 minutes de Sion.</p>
+        <p class="w3-center"><strong>Le domaine skiable comprend plus de 35 km de pistes pour tous les niveaux.</strong></p>
+        <p class="w3-center">La station est idéale pour les familles avec des tout-petits, tout comme aux skieurs et snowboarders confirmés, 
+            que ce soit pour le ski de descente comme pour le ski de randonnée.</p>
+        <p class="w3-center">Les amoureux de montagne trouveront tous leur bonheur, avec plusieurs installations disponibles.
+            Vivez une expérience adaptée à vos besoin en vous rendant sur notre onglet <strong>"Experience"</strong>, où vous pourrez personnaliser votre journée 
+            blanche en fonction de votre niveau. Découvrez, par piste, les services et installations à proximité sur notre onglet <strong>"Domaine forestier"</strong>. 
+            Pour une vue globale de la station et des ses environs, rendez-vous sur notre onglet <strong>"Vue générale"</strong></p>
+        <p class="w3-center">Nous vous souhaitons une belle découverte de notre domaine !</p>
+        <p class="w3-center">Ouverture du domaine skiable dès 9h le matin.</p>
     </div>
-    <!-- Header -->
-    <header class="w3-display-container w3-content w3-wide" style="max-width:1500px; padding-top:60px;" id="home">
-        <img class="w3-image" src="https://www.thomascrauwels.ch/wp-content/uploads/2020/10/panorama-du-valais-202008_dsc7336-panorama-scaled-scaled-scaled-2048x410.jpg" alt="Domaine skiable, picture by @thomascrauwels" width="1500px">
-        <div class="w3-display-middle w3-margin-top w3-center">
-            <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>WELCOME</b></span><span class="w3-hide-small w3-text-light-grey"><p>NAX TÉLÉ MONT-NOBLE</p></span></h1>
-        </div>
-    </header>
-    <!-- Page content -->
-    <div class="w3-content w3-padding" style="max-width:1564px">
-        <!-- About Section -->
-        <div class="w3-container w3-padding-32" id="about">
-            <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h3>
-            <p class="w3-center">Bienvenue dans un domaine skiable à taille humaine et familiale, où vous pourrez profiter de skier ou snowboarder en famille, en plein 
-                coeur du Valais et à 19 minutes de Sion.</p>
-            <p class="w3-center"><strong>Le domaine skiable comprend plus de 35 km de pistes pour tous les niveaux.</strong></p>
-            <p class="w3-center">La station est idéale pour les familles avec des tout-petits, tout comme aux skieurs et snowboarders confirmés, 
-                que ce soit pour le ski de descente comme pour le ski de randonnée.</p>
-            <p class="w3-center">Les amoureux de montagne trouveront tous leur bonheur, avec plusieurs installations disponibles.
-                Vivez une expérience adaptée à vos besoin en vous rendant sur notre onglet <strong>"Experience"</strong>, où vous pourrez personnaliser votre journée 
-                blanche en fonction de votre niveau. Découvrez, par piste, les services et installations à proximité sur notre onglet <strong>"Domaine forestier"</strong>. 
-                Pour une vue globale de la station et des ses environs, rendez-vous sur notre onglet <strong>"Vue générale"</strong></p>
-            <p class="w3-center">Nous vous souhaitons une belle découverte de notre domaine !</p>
-            <p class="w3-center">Ouverture du domaine skiable dès 9h le matin.</p>
-        </div>
-        <!-- Calculate route -->
-        <div class="formBlock">
-            <form id="form">
-                <input type="text" name="start" class="input" id="start" placeholder="Départ" />
-                <input type="text" name="end" class="input" id="end" placeholder="Arrivée" />
-                <button type="submit">Get Directions</button>
-            </form>
-        </div>
-        {% leaflet_map "map" callback="map_init" %}
-        <div id='map'>
-            <script type="text/javascript">
-
-                var map, dir, CustomRouteLayer, start, end;
-
-                // init MQ.mapLayer() map
-                function map_init(map, options) {
-                    map.setView([46.211657, 7.481341], 10);
-                }
-
-                function runDirection(start, end) {  
-                    // Remove the existing map if it exists
-                    if (map) {
-                        map.remove();
-                    }
-
-                    // recreating new map layer after removal
-                    map = L.map('map', {
-                        layers: MQ.mapLayer(),
-                        center: [46.211657, 7.481341],
-                        zoom: 10
-                    });
-
-                    dir = MQ.routing.directions();
-
-                    dir.route({
-                        locations: [
-                            start,
-                            end
-                        ]
-                    });
-        
-
-                    CustomRouteLayer = MQ.Routing.RouteLayer.extend({
-                        createStartMarker: (location) => {
-                            var custom_icon;
-                            var marker;
-                            custom_icon = L.icon({
-                                iconUrl: 'https://cdn-icons-png.flaticon.com/512/944/944551.png',
-                                iconSize: [20, 29],
-                                iconAnchor: [10, 29],
-                                popupAnchor: [0, -29]
-                            });
-                            marker = L.marker(location.latLng, {icon: custom_icon}).addTo(map);
-                            return marker;
-                        },
-
-                        createEndMarker: (location) => {
-                            var custom_icon;
-                            var marker;
-                            custom_icon = L.icon({
-                                iconUrl: 'https://cdn-icons-png.flaticon.com/512/944/944551.png',
-                                iconSize: [20, 29],
-                                iconAnchor: [10, 29],
-                                popupAnchor: [0, -29]
-                            });
-                            marker = L.marker(location.latLng, {icon: custom_icon}).addTo(map);
-                            return marker;
-                        }
-                    });
-                    
-                    // Add the CustomRouteLayer directly to the map
-                    new CustomRouteLayer({
-                        directions: dir,
-                        fitBounds: true
-                    }).addTo(map);
-                }
-
-                // Call map_init after the map container is created
-                map_init(map, {});
-
-                // function that runs when form submitted
-                function submitForm(event) {
-                    event.preventDefault();
-
-                    // getting form data
-                    start = document.getElementById("start").value;
-                    end = document.getElementById("end").value;
-
-                    // run directions function
-                    runDirection(start, end);
-
-                    // reset form
-                    document.getElementById("form").reset();
-                }
-
-                // asign the form to form variable
-                const form = document.getElementById('form');
-
-                // call the submitForm() function when submitting the form
-                form.addEventListener('submit', submitForm);
-            </script>
-        </div>
-    </div>
-</body>
-</html>
-```
+    <!-- Place for an API -->
+{% endblock %}
