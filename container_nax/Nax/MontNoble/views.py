@@ -6,7 +6,7 @@ from django.core.serializers import serialize
 from shapely.geometry import Polygon
 from django.core.serializers import serialize
 
-from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors_polygon, get_list_of_neighbors_line
+from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors_intersect, get_list_of_neighbors_crosses
 
 def index(request):
     return render (request, 'MontNoble/index.html')
@@ -34,9 +34,9 @@ def domainByDifficulty(request, difficulty):
 
     for ski_slope in ski_slopes:
         # Get neigbor services
-        neighborHotels.extend(get_list_of_neighbors_polygon(ski_slope, Hotel.objects.order_by('-name')))
-        neighborRestaurants.extend(get_list_of_neighbors_polygon(ski_slope, Restaurant.objects.order_by('-name')))
-        neighborHuts.extend(get_list_of_neighbors_polygon(ski_slope, Hut.objects.order_by('-name')))
+        neighborHotels.extend(get_list_of_neighbors_intersect(ski_slope, Hotel.objects.order_by('-name')))
+        neighborRestaurants.extend(get_list_of_neighbors_intersect(ski_slope, Restaurant.objects.order_by('-name')))
+        neighborHuts.extend(get_list_of_neighbors_intersect(ski_slope, Hut.objects.order_by('-name')))
 
     # Serialize
     slope_ser=serialize('geojson',ski_slopes,geometry_field='geom')
@@ -60,9 +60,9 @@ def slopeServices(request, slope_id):
         raise Http404("Slope not found!!")
     
     # Get neigbor services
-    neighborHotels=get_list_of_neighbors_polygon(ski_slope, Hotel.objects.order_by('-name'))
-    neighborRestaurants=get_list_of_neighbors_polygon(ski_slope, Restaurant.objects.order_by('-name'))
-    neighborHuts=get_list_of_neighbors_polygon(ski_slope, Hut.objects.order_by('-name'))
+    neighborHotels=get_list_of_neighbors_intersect(ski_slope, Hotel.objects.order_by('-name'))
+    neighborRestaurants=get_list_of_neighbors_intersect(ski_slope, Restaurant.objects.order_by('-name'))
+    neighborHuts=get_list_of_neighbors_intersect(ski_slope, Hut.objects.order_by('-name'))
     
     # Serialize
     ski_slope_arr = [ski_slope]
@@ -84,7 +84,7 @@ def slopeForests(request, slope_id):
         raise Http404("Slope not found!!")
 
     all_forests=Forest.objects.order_by('-name')
-    neighborForests = get_list_of_neighbors_polygon(model=ski_slope, others_list=all_forests)
+    neighborForests = get_list_of_neighbors_intersect(model=ski_slope, others_list=all_forests)
 
     for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
     ski_slope_arr = [ski_slope]
@@ -99,7 +99,7 @@ def chairLiftForests(request, chairLift_id):
         raise Http404("Slope not found!!")
 
     all_forests=Forest.objects.order_by('-name')
-    neighborForests = get_list_of_neighbors_line(model=chair_lift, others_list=all_forests)
+    neighborForests = get_list_of_neighbors_crosses(model=chair_lift, others_list=all_forests)
 
     for_ser=serialize('geojson',neighborForests,geometry_field='geom',fields=("name", ))
     ser=serialize('geojson',[chair_lift],geometry_field='geom',fields=("name", ))

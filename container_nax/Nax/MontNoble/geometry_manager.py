@@ -6,7 +6,7 @@ def load_shapely_from_geodjango(geoDjangoModel):
       # The ; is the delimiter before the start of the geodjango
       return shapely.wkt.loads(str(geoDjangoModel.geom).partition(";")[2])
 
-def is_neighbor_polygon(model, other):
+def is_neighbor_intersect(model, other):
       model_polygon = load_shapely_from_geodjango(model)
       other_polygon = load_shapely_from_geodjango(other)
       
@@ -15,23 +15,23 @@ def is_neighbor_polygon(model, other):
             return True
       return False
 
-def get_list_of_neighbors_polygon(model, others_list):
+def get_list_of_neighbors_intersect(model, others_list):
       neighbors = []
       for other in others_list:
-            if (is_neighbor_polygon(model, other)):
+            if (is_neighbor_intersect(model, other)):
                   neighbors.append(other)
 
       return neighbors
 
-def get_list_of_neighbors_line(model, others_list):
+def get_list_of_neighbors_crosses(model, others_list):
       neighbors = []
       for other in others_list:
-            if (is_neighbor_line(model, other)):
+            if (is_neighbor_crosses(model, other)):
                   neighbors.append(other)
 
       return neighbors
 
-def is_neighbor_line(model, other):
+def is_neighbor_crosses(model, other):
       model_polygon = load_shapely_from_geodjango(model)
       other_polygon = load_shapely_from_geodjango(other)
       
