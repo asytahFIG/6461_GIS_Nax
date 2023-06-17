@@ -3,10 +3,8 @@ from .models import Forest, Ski_slope, Hotel, Hut, Facilities, Summit, Chair_lif
 from django.template import loader
 from django.shortcuts import render
 from django.core.serializers import serialize
-from shapely.geometry import Polygon
-from django.core.serializers import serialize
 
-from MontNoble.geometry_manager import load_shapely_from_geodjango, get_list_of_neighbors_intersect, get_list_of_neighbors_crosses
+from MontNoble.geometry_manager import get_list_of_neighbors_intersect, get_list_of_neighbors_crosses
 
 def index(request):
     return render (request, 'MontNoble/index.html')
@@ -48,31 +46,6 @@ def domainByDifficulty(request, difficulty):
     context = {'skiSlopes': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser,
                'chairLifts': chair_lift_ser}
     return render(request, "MontNoble/domainByDifficulty.html", context)
-
-
-def slopesServices(request):
-    return render(request, "MontNoble/slopesServices.html")
-
-def slopeServices(request, slope_id):
-    try:
-        ski_slope=Ski_slope.objects.get(pk=slope_id)
-    except Ski_slope.DoesNotExist:
-        raise Http404("Slope not found!!")
-    
-    # Get neigbor services
-    neighborHotels=get_list_of_neighbors_intersect(ski_slope, Hotel.objects.order_by('-name'))
-    neighborRestaurants=get_list_of_neighbors_intersect(ski_slope, Restaurant.objects.order_by('-name'))
-    neighborHuts=get_list_of_neighbors_intersect(ski_slope, Hut.objects.order_by('-name'))
-    
-    # Serialize
-    ski_slope_arr = [ski_slope]
-    slope_ser=serialize('geojson',ski_slope_arr,geometry_field='geom')
-    hotels_ser=serialize('geojson',neighborHotels,geometry_field='geom')
-    restaurants_ser=serialize('geojson',neighborRestaurants,geometry_field='geom')
-    huts_ser=serialize('geojson',neighborHuts,geometry_field='geom')
-
-    context = {'skiSlope': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser}
-    return render(request, "MontNoble/slopeServices.html", context)
 
 def slopesForests(request):
     return render(request, 'MontNoble/slopesForests.html')
