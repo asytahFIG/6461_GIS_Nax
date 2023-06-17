@@ -42,7 +42,6 @@
                         if (feature.properties.type == "ski_slope")
                             layer.on('click', () => { window.location.href = '/slopeForests/' + feature.properties.pk; })
                         else{
-                            alert('JHAHAHAA') // ton alerte se lance à chaque fois qu'on affiche la page... et ça bloque tout ;-)
                             layer.on('click', () => { window.location.href = '/chairLiftForests/' + feature.properties.pk; })
                         }
                     }
