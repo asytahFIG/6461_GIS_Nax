@@ -28,20 +28,21 @@ def domainByDifficulty(request, difficulty):
     elif (difficulty == 2):
         ski_slopes = [s for s in ski_slopes if (s.difficulty <= 4)]
 
-    neighborHotels, neighborRestaurants,  neighborHuts = [], [], []
+    neighborHotels, neighborRestaurants,  neighborHuts, neighborChairLifts = [], [], [], []
 
     for ski_slope in ski_slopes:
         # Get neigbor services
         neighborHotels.extend(get_list_of_neighbors_intersect(ski_slope, Hotel.objects.order_by('-name')))
         neighborRestaurants.extend(get_list_of_neighbors_intersect(ski_slope, Restaurant.objects.order_by('-name')))
         neighborHuts.extend(get_list_of_neighbors_intersect(ski_slope, Hut.objects.order_by('-name')))
+        neighborChairLifts.extend(get_list_of_neighbors_intersect(ski_slope, Chair_lift.objects.order_by('-name')))
 
     # Serialize
     slope_ser=serialize('geojson',ski_slopes,geometry_field='geom')
     hotels_ser=serialize('geojson',neighborHotels,geometry_field='geom')
     restaurants_ser=serialize('geojson',neighborRestaurants,geometry_field='geom')
     huts_ser=serialize('geojson',neighborHuts,geometry_field='geom')
-    chair_lift_ser = serialize('geojson',Chair_lift.objects.all() ,geometry_field='geom')
+    chair_lift_ser = serialize('geojson',neighborChairLifts,geometry_field='geom')
 
     context = {'skiSlopes': slope_ser, 'hotels': hotels_ser, 'restaurants': restaurants_ser, 'huts': huts_ser,
                'chairLifts': chair_lift_ser}
